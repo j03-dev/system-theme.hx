@@ -12,6 +12,6 @@ fn detect() -> FFIValue {
     let system_theme = ::system_theme::SystemTheme::new().unwrap();
     match system_theme.theme_scheme() {
         Ok(::system_theme::ThemeScheme::Dark) => FFIValue::StringV("dark".into()),
-        _ => FFIValue::StringV("light".to_string().into()),
+        _ => FFIValue::StringV("light".into()),
     }
 }
