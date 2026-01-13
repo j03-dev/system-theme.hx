@@ -34,7 +34,7 @@ Then, install the plugin with one of the installation methods below.
 Forge is the Steel package manager, and will have been installed in the previous step. Run the following:
 
 ```sh
-forge pkg install --git https://github.com/yourusername/system-theme.hx.git
+forge pkg install --git https://github.com/j03-dev/system-theme.hx.git
 ```
 
 ### Building from source
