@@ -14,23 +14,23 @@
   (define current-theme (detect))
 
   (if (equal? current-theme "dark")
-      (theme dark)
-      (theme light))
+    (theme dark)
+    (theme light))
 
   (spawn-native-thread
-   (lambda ()
-     (let loop ()
-       (time/sleep-ms interval-ms)
+    (lambda ()
+      (let loop ()
+        (time/sleep-ms interval-ms)
 
-       (define detected (detect))
+        (define detected (detect))
 
-       (unless (equal? detected current-theme)
-         (set! current-theme detected)
+        (unless (equal? detected current-theme)
+          (set! current-theme detected)
 
-         (hx.with-context
-          (lambda ()
-            (if (equal? detected "dark")
+          (hx.with-context
+            (lambda ()
+              (if (equal? detected "dark")
                 (theme dark)
                 (theme light)))))
 
-       (loop)))))
+        (loop)))))
