@@ -5,6 +5,11 @@
 
 (provide auto-theme)
 
+;; Automatically switch Helix theme based on system dark/light mode.
+;; Polls in a background thread and only touches Helix when the theme changes.
+;;
+;; Usage:
+;;   (auto-theme-watch "catppuccin-mocha" "catppuccin-latte")
 (define (auto-theme dark light [interval-ms 2000])
   (define current-theme (detect))
 
