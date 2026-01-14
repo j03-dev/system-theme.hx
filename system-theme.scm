@@ -5,26 +5,27 @@
 
 (provide auto-theme)
 
-(define current-theme #f)
-
-(define (apply-theme dark light)
-  (define detected (detect))
-  (unless (equal? detected current-theme)
-    (set! current-theme detected)
-    (if (equal? detected "dark")
-        (theme dark)
-        (theme light))))
-
 (define (auto-theme dark light [interval-ms 2000])
-  ;; Apply once immediately
-  (apply-theme dark light)
+  (define current-theme (detect))
 
-  ;; Background polling loop
+  (if (equal? current-theme "dark")
+      (theme dark)
+      (theme light))
+
   (spawn-native-thread
    (lambda ()
      (let loop ()
        (time/sleep-ms interval-ms)
-       (hx.with-context
-        (lambda ()
-          (apply-theme dark light)))
+
+       (define detected (detect))
+
+       (unless (equal? detected current-theme)
+         (set! current-theme detected)
+
+         (hx.with-context
+          (lambda ()
+            (if (equal? detected "dark")
+                (theme dark)
+                (theme light)))))
+
        (loop)))))
