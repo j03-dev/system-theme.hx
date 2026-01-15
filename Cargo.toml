@@ -10,6 +10,9 @@ crate-type = ["rlib", "cdylib"]
 
 
 [dependencies]
-steel-core = { version = "0.7.0", git = "https://github.com/mattwparas/steel.git", features = ["dylibs", "sync"] }
+steel-core = { version = "0.7.0", git = "https://github.com/mattwparas/steel.git", features = [
+  "dylibs",
+  "sync",
+] }
 abi_stable = "0.11.1"
-system-theme = "0.1.0"
+dark-light = { git = "https://github.com/rust-dark-light/dark-light.git", rev = "0f18d2f" }

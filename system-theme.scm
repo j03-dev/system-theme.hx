@@ -5,13 +5,22 @@
 
 (provide auto-theme)
 
+(define (safe-detect)
+  (with-handler
+    (lambda (err)
+      (displayln "[system-theme] detect failed:")
+      (displayln err)
+      "light") ; fallback
+    (lambda ()
+      (detect))))
+
 ;; Automatically switch Helix theme based on system dark/light mode.
 ;; Polls in a background thread and only touches Helix when the theme changes.
 ;;
 ;; Usage:
 ;;   (auto-theme-watch "catppuccin-mocha" "catppuccin-latte")
 (define (auto-theme dark light [interval-ms 2000])
-  (define current-theme (detect))
+  (define current-theme (safe-detect))
 
   (if (equal? current-theme "dark")
     (theme dark)
@@ -22,7 +31,7 @@
       (let loop ()
         (time/sleep-ms interval-ms)
 
-        (define detected (detect))
+        (define detected (safe-detect))
 
         (unless (equal? detected current-theme)
           (set! current-theme detected)

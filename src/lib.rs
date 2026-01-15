@@ -8,10 +8,11 @@ pub fn system_theme_module() -> FFIModule {
     module
 }
 
-fn detect() -> FFIValue {
-    let system_theme = ::system_theme::SystemTheme::new().unwrap();
-    match system_theme.theme_scheme() {
-        Ok(::system_theme::ThemeScheme::Dark) => FFIValue::StringV("dark".into()),
-        _ => FFIValue::StringV("light".into()),
-    }
+fn detect() -> Result<FFIValue, String> {
+    let detected = ::dark_light::detect().map_err(|err| err.to_string())?;
+    let theme = match detected {
+        dark_light::Mode::Dark => "dark",
+        _ => "light",
+    };
+    Ok(FFIValue::StringV(theme.into()))
 }
