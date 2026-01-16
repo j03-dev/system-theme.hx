@@ -10,27 +10,33 @@
 ;;
 ;; Usage:
 ;;   (auto-theme-watch "catppuccin-mocha" "catppuccin-latte")
-(define (auto-theme dark light [interval-ms 2000])
+;;
+;; Arguments:
+;;   dark        - Theme to use when the system is in dark mode
+;;   light       - Theme to use when the system is in light mode
+;;   interval-ms - (optional) Polling interval in milliseconds
+;;                 Default: 1000ms (1 second)
+(define (auto-theme dark light [interval-ms 1000])
   (define current-theme (detect))
 
   (if (equal? current-theme "dark")
-      (theme dark)
-      (theme light))
+    (theme dark)
+    (theme light))
 
   (spawn-native-thread
-   (lambda ()
-     (let loop ()
-       (time/sleep-ms interval-ms)
+    (lambda ()
+      (let loop ()
+        (time/sleep-ms interval-ms)
 
-       (define detected (detect))
+        (define detected (detect))
 
-       (unless (equal? detected current-theme)
-         (set! current-theme detected)
+        (unless (equal? detected current-theme)
+          (set! current-theme detected)
 
-         (hx.with-context
-          (lambda ()
-            (if (equal? detected "dark")
+          (hx.with-context
+            (lambda ()
+              (if (equal? detected "dark")
                 (theme dark)
                 (theme light)))))
 
-       (loop)))))
+        (loop)))))
