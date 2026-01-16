@@ -10,6 +10,12 @@
 ;;
 ;; Usage:
 ;;   (auto-theme-watch "catppuccin-mocha" "catppuccin-latte")
+;;
+;; Arguments:
+;;   dark        - Theme to use when the system is in dark mode
+;;   light       - Theme to use when the system is in light mode
+;;   interval-ms - (optional) Polling interval in milliseconds
+;;                 Default: 1000ms (1 second)
 (define (auto-theme dark light [interval-ms 1000])
   (define current-theme (detect))
 
