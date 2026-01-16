@@ -8,11 +8,26 @@ pub fn system_theme_module() -> FFIModule {
     module
 }
 
-fn detect() -> Result<FFIValue, String> {
-    let detected = ::dark_light::detect().map_err(|err| err.to_string())?;
-    let theme = match detected {
-        dark_light::Mode::Dark => "dark",
-        _ => "light",
-    };
-    Ok(FFIValue::StringV(theme.into()))
+fn get_sys_theme() -> String {
+    let detected = ::dark_light::detect();
+    match detected {
+        Ok(dark_light::Mode::Dark) => "dark".to_string(),
+        Ok(dark_light::Mode::Light) | Ok(dark_light::Mode::Unspecified) => "light".to_string(),
+        Err(e) => e.to_string(),
+    }
+}
+
+fn detect() -> FFIValue {
+    let theme = get_sys_theme();
+    FFIValue::StringV(theme.into())
+}
+
+#[cfg(test)]
+mod test {
+
+    #[test]
+    fn test_detect() {
+        let theme = super::get_sys_theme();
+        assert_eq!(theme, "light");
+    }
 }
