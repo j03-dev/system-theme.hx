@@ -10,7 +10,7 @@
 ;;
 ;; Usage:
 ;;   (auto-theme-watch "catppuccin-mocha" "catppuccin-latte")
-(define (auto-theme dark light [interval-ms 2000])
+(define (auto-theme dark light [interval-ms 1000])
   (define current-theme (detect))
 
   (if (equal? current-theme "dark")
