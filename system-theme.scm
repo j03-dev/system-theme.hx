@@ -19,9 +19,7 @@
 (define (auto-theme dark light [interval-ms 1000])
   (define current-theme (detect))
 
-  (if (equal? current-theme "dark")
-    (theme dark)
-    (theme light))
+  (apply-theme current-theme dark light)
 
   (spawn-native-thread
     (lambda ()
@@ -35,8 +33,11 @@
 
           (hx.with-context
             (lambda ()
-              (if (equal? detected "dark")
-                (theme dark)
-                (theme light)))))
+              (apply-theme detected dark light))))
 
         (loop)))))
+
+(define (apply-theme mode dark light)
+  (if (equal? mode "dark")
+    (theme dark)
+    (theme light)))
